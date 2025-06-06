@@ -12,6 +12,7 @@ class LikeController extends Controller
         $this->middleware('auth');
     }
 
+    // fungsi like post
     public function store(Post $post)
     {
         $post->likes()->create([
@@ -21,6 +22,7 @@ class LikeController extends Controller
         return back();
     }
 
+    // fungsi unlike post
     public function destroy(Post $post)
     {
         $post->likes()->where('user_id', auth()->id())->delete();
