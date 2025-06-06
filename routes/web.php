@@ -8,15 +8,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\FollowController;
 
-// Set homepage to show posts feed (requires authentication)
-Route::get('/', [PostController::class, 'index'])
-    ->middleware('auth')
-    ->name('home');
-
-Route::get('/home', function () {
-    return redirect('/'); // Redirect to your main feed
-})->name('home'); // Nama route ini sudah 'home', sama dengan di atas. Mungkin salah satunya bisa diubah atau dihapus jika duplikat.
-
+// Home route
+Route::get('/', [PostController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/home', function () {return redirect('/');})->name('home');
 Auth::routes();
 
 // Post routes
@@ -28,9 +22,8 @@ Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.e
 Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
-// Search
+// Search routes
 Route::get('/search', [PostController::class, 'search'])->name('search.index')->middleware('auth');
-
 
 // Profile routes
 Route::get('/profile/{user}', [ProfileController::class, 'index'])->name('profile.show');
@@ -45,6 +38,6 @@ Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->nam
 Route::post('/posts/{post}/likes', [LikeController::class, 'store'])->name('likes.store');
 Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])->name('likes.destroy');
 
-// *** TAMBAHKAN ROUTE INI UNTUK FOLLOW/UNFOLLOW ***
+// Follow routes
 Route::post('/follow/{user}', [FollowController::class, 'store'])->name('follow.store');
 Route::delete('/unfollow/{user}', [FollowController::class, 'destroy'])->name('follow.destroy');
