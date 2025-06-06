@@ -48,23 +48,18 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    // Relasi untuk mendapatkan daftar pengguna yang mengikuti user ini (followers)
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_follower', 'following_user_id', 'user_id')->withTimestamps();
     }
 
-    // Relasi untuk mendapatkan daftar pengguna yang diikuti oleh user ini (following)
     public function following(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_follower', 'user_id', 'following_user_id')->withTimestamps();
     }
 
-    // Metode untuk memeriksa apakah pengguna yang sedang login mengikuti $user lain
     public function isFollowing(User $userToFollow): bool
     {
-        // Pastikan user_id yang digunakan adalah ID pengguna yang sedang login
-        // Relasi 'following()' sudah merepresentasikan pengguna yang di-follow oleh 'this' user.
         return $this->following()->where('_id', $userToFollow->id)->exists();
     }
 }
