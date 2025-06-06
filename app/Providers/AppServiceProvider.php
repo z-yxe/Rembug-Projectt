@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
+
+    // fungssi menampilkan pengguna acak di sidebar
     public function boot(): void
     {
         View::composer('layouts.app', function ($view) {
