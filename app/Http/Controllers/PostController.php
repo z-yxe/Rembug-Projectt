@@ -14,17 +14,20 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
+    // fungsi menampilkan daftar postingan
     public function index()
     {
         $posts = Post::with('user')->latest()->paginate(10);
         return view('posts.index', compact('posts'));
     }
 
+    // fungsi membuat postingan baru
     public function create()
     {
         return view('posts.create');
     }
 
+    // fungsi menyimpan postingan baru
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -42,14 +45,15 @@ class PostController extends Controller
         return redirect('/profile/' . auth()->user()->id);
     }
 
+    // fungsi menampilkan postingan
     public function show(Post $post)
     {
         return view('posts.show', compact('post'));
     }
 
+    // fungsi mengedit postingan
     public function edit(Post $post)
     {
-        // Check if the authenticated user is the same as the post user
         if (auth()->id() !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -57,9 +61,9 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
+    // fungsi memperbarui postingan
     public function update(Request $request, Post $post)
     {
-        // Check if the authenticated user is the same as the post user
         if (auth()->id() !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -73,23 +77,20 @@ class PostController extends Controller
         return redirect('/posts/' . $post->id);
     }
 
+    // fungsi menghapus postingan
     public function destroy(Post $post)
     {
-        // Check if the authenticated user is the same as the post user
         if (auth()->id() !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
-        // Delete the image file
         Storage::disk('public')->delete($post->image_path);
-
-        // Delete the post
         $post->delete();
 
         return redirect('/profile/' . auth()->user()->id);
     }
 
-    // *** TAMBAHKAN METODE INI UNTUK PENCARIAN ***
+    // fungsi pencarian postingan dan user
     public function search(Request $request)
     {
         $query = $request->input('q');
@@ -97,16 +98,14 @@ class PostController extends Controller
         $userResults = null;
 
         if ($query) {
-            // Mencari postingan berdasarkan caption
             $postResults = Post::where('caption', 'LIKE', "%{$query}%")
-                ->with('user') // Muat relasi user untuk postingan
-                ->latest() // Urutkan dari yang terbaru
-                ->paginate(10, ['*'], 'posts_page'); // 10 hasil per halaman, nama halaman 'posts_page'
+                ->with('user')
+                ->latest()
+                ->paginate(10, ['*'], 'posts_page');
 
-            // Mencari pengguna berdasarkan username atau nama
             $userResults = User::where('username', 'LIKE', "%{$query}%")
                 ->orWhere('name', 'LIKE', "%{$query}%")
-                ->paginate(10, ['*'], 'users_page'); // 10 hasil per halaman, nama halaman 'users_page'
+                ->paginate(10, ['*'], 'users_page');
         }
 
         return view('search.index', compact('query', 'postResults', 'userResults'));
