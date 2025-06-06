@@ -113,7 +113,6 @@
             color: white !important;
         }
 
-        /* Remove auto-show dropdown - only show when clicked */
         .dropdown-menu {
             display: none;
         }
@@ -472,7 +471,7 @@
             </div>
         </nav>
 
-        {{-- Mobile Menu Offcanvas --}}
+        <!-- Mobile Menu Offcanvas -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenuOffcanvas" aria-labelledby="mobileMenuOffcanvasLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="mobileMenuOffcanvasLabel">REMBUG</h5>
@@ -481,6 +480,7 @@
             <div class="offcanvas-body">
                 <ul class="nav flex-column">
                     @auth
+
                     <!-- User Profile Card -->
                     <li class="nav-item mb-4">
                         <div class="user-profile-card">
@@ -590,7 +590,8 @@
 
         <div class="container-fluid flex-grow-1 main-content-area">
             <div class="row h-100">
-                {{-- Sidebar Kiri (Navigasi Utama Desktop) --}}
+                
+                <!-- Main Navigarion (Kiri) -->
                 <aside class="col-md-3 col-lg-2 d-none d-md-flex flex-column sticky-sidebar">
                     <ul class="nav flex-column sidebar-nav">
                         @auth
@@ -616,12 +617,12 @@
                     @endauth
                 </aside>
 
-                {{-- Konten Utama --}}
+                <!-- Konten Utama (Tengah) -->
                 <main class="col-12 col-md-6 col-lg-7 main-content">
                     @yield('content')
                 </main>
 
-                {{-- Sidebar Kanan (Pengguna Acak Desktop) --}}
+                <!-- Random User (Kanan) -->
                 <aside class="col-md-3 col-lg-3 d-none d-md-block sticky-sidebar right-sidebar d-flex flex-column">
                     @auth
                     <div class="user-profile-card">
