@@ -13,6 +13,7 @@ class CommentController extends Controller
         $this->middleware('auth');
     }
 
+    // fungsi menampilkan komentar
     public function store(Request $request, Post $post)
     {
         $data = $request->validate([
@@ -27,9 +28,9 @@ class CommentController extends Controller
         return redirect('/posts/' . $post->id);
     }
 
+    // fungsi menghapus komentar
     public function destroy(Comment $comment)
     {
-        // Check if the authenticated user is the comment owner or post owner
         if (auth()->id() !== $comment->user_id && auth()->id() !== $comment->post->user_id) {
             abort(403, 'Unauthorized action.');
         }
