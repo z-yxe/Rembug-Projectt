@@ -13,9 +13,9 @@ class ProfileController extends Controller
         return view('profiles.index', compact('user'));
     }
 
+    // fungsi edit profile
     public function edit(User $user)
     {
-        // Check if the authenticated user is the same as the profile user
         if (auth()->id() !== $user->id) {
             abort(403, 'Unauthorized action.');
         }
@@ -23,9 +23,9 @@ class ProfileController extends Controller
         return view('profiles.edit', compact('user'));
     }
 
+    // fungsi update profile
     public function update(Request $request, User $user)
     {
-        // Check if the authenticated user is the same as the profile user
         if (auth()->id() !== $user->id) {
             abort(403, 'Unauthorized action.');
         }
@@ -38,7 +38,6 @@ class ProfileController extends Controller
         ]);
 
         if ($request->hasFile('profile_image')) {
-            // Delete old profile image if exists
             if ($user->profile_image) {
                 Storage::disk('public')->delete($user->profile_image);
             }
